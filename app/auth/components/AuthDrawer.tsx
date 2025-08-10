@@ -7,7 +7,7 @@ import LoginForm from '../login/components/LoginForm';
 import RegisterForm from '../register/components/RegisterForm';
 import { toast } from 'sonner';
 
-export default function AuthDrawer() {
+export default function AuthDrawer({ initialMode = 'login' }: { initialMode?: 'login'|'register' }) {
   const searchParams = useSearchParams();
   const mode = searchParams.get('mode') as 'login' | 'register' | null;
 
