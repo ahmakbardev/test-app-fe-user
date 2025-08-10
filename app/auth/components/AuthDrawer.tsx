@@ -1,19 +1,25 @@
 'use client';
 
 import { Drawer } from 'vaul';
-import { useRef, useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import LoginForm from '../login/components/LoginForm';
 import RegisterForm from '../register/components/RegisterForm';
 import { toast } from 'sonner';
 
-export default function AuthDrawer({ initialMode = 'login' }: { initialMode?: 'login'|'register' }) {
-  const searchParams = useSearchParams();
-  const mode = searchParams.get('mode') as 'login' | 'register' | null;
-
-  const [view, setView] = useState<'login' | 'register'>('login');
+export default function AuthDrawer({
+  initialMode = 'login'
+}: {
+  initialMode?: 'login' | 'register';
+}) {
+  const [view, setView] = useState<'login' | 'register'>(initialMode);
   const [isOpen, setIsOpen] = useState(false);
   const drawerTriggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    // auto-open sesuai initialMode dari server
+    setView(initialMode);
+    setIsOpen(true);
+  }, [initialMode]);
 
   const openDrawer = (target: 'login' | 'register') => {
     setView(target);
@@ -27,14 +33,6 @@ export default function AuthDrawer({ initialMode = 'login' }: { initialMode?: 'l
       setIsOpen(true);
     }, 300);
   };
-
-  // Auto-open drawer sesuai query param ?mode=login / ?mode=register
-  useEffect(() => {
-    if (mode === 'login' || mode === 'register') {
-      setView(mode);
-      setIsOpen(true);
-    }
-  }, [mode]);
 
   return (
     <>
