@@ -1,42 +1,88 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--muted); /* hijau soft */
+    --foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 138 60% 45%; /* #28a745-ish */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 144 25% 92%;
+    --secondary-foreground: 138 60% 25%;
+
+    --muted: 138 24% 95%;
+    --muted-foreground: 138 15% 35%;
+
+    --accent: 138 35% 88%;
+    --accent-foreground: 138 55% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 138 20% 85%;
+    --input: 138 20% 85%;
+    --ring: 138 60% 45%;
+
+    --chart-1: 138 60% 45%;
+    --chart-2: 197 37% 24%;
+    --chart-3: 43 74% 66%;
+    --chart-4: 27 87% 67%;
+    --chart-5: 12 76% 61%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 138 15% 10%;
+    --foreground: 138 20% 90%;
+    --card: 138 10% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 138 10% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 138 55% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 138 18% 18%;
+    --secondary-foreground: 138 25% 90%;
+
+    --muted: 138 15% 18%;
+    --muted-foreground: 138 15% 65%;
+
+    --accent: 138 25% 22%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 138 15% 25%;
+    --input: 138 15% 25%;
+    --ring: 138 60% 50%;
+
+    --chart-1: 138 60% 45%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+@layer utilities {
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  .animate-shimmer {
+    animation: shimmer 1.6s infinite;
   }
 }
