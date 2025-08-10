@@ -1,16 +1,20 @@
 import Header from '../components/Header';
-import HeroSection from './components/Hero';
+import Categories from './components/Categories';
+import Hero from './components/Hero';
 import QuickTestActions from './components/QuickActions';
-import RecommendedTestsList from './components/RecommendedList';
+import Recent from './components/Recent';
+import SearchBar from './components/SearchBar';
 
 export default function Homepage() {
   return (
     <>
       <Header title="Test Center" variant="root" />
       <section className="max-w-[560px] mx-auto px-4 py-4 space-y-6">
-        <HeroSection />
+        <SearchBar />
+        <Hero />
         <QuickTestActions />
-        <RecommendedTestsList />
+        <Categories />
+        <Recent />
       </section>
     </>
   );

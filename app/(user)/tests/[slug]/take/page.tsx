@@ -50,82 +50,82 @@ const dummyBank: Record<string, Question[]> = {
     {
       id: 101,
       question:
-        'Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah…',
+        'Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah...',
       options: { A: 'Bandung', B: 'Jakarta', C: 'Surabaya', D: 'Medan' },
       answer: 'B'
     },
     {
       id: 102,
-      question: 'Hasil dari 12 × 8 adalah…',
+      question: 'Hasil dari 12 × 8 adalah...',
       options: { A: '80', B: '88', C: '96', D: '98' },
       answer: 'C'
     },
     {
       id: 103,
-      question: 'Sinonim kata “segera” adalah…',
+      question: 'Sinonim kata “segera” adalah...',
       options: { A: 'Lambat', B: 'Nanti', C: 'Lekas', D: 'Perlahan' },
       answer: 'C'
     },
     {
       id: 104,
       question:
-        'Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah…',
+        'Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah...',
       options: { A: 'Bandung', B: 'Jakarta', C: 'Surabaya', D: 'Medan' },
       answer: 'B'
     },
     {
       id: 105,
-      question: 'Hasil dari 12 × 8 adalah…',
+      question: 'Hasil dari 12 × 8 adalah...',
       options: { A: '80', B: '88', C: '96', D: '98' },
       answer: 'C'
     },
     {
       id: 106,
-      question: 'Sinonim kata “segera” adalah…',
+      question: 'Sinonim kata “segera” adalah...',
       options: { A: 'Lambat', B: 'Nanti', C: 'Lekas', D: 'Perlahan' },
       answer: 'C'
     },
     {
       id: 107,
       question:
-        'Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah…',
+        'Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah...',
       options: { A: 'Bandung', B: 'Jakarta', C: 'Surabaya', D: 'Medan' },
       answer: 'B'
     },
     {
       id: 108,
-      question: 'Hasil dari 12 × 8 adalah…',
+      question: 'Hasil dari 12 × 8 adalah...',
       options: { A: '80', B: '88', C: '96', D: '98' },
       answer: 'C'
     },
     {
       id: 109,
-      question: 'Sinonim kata “segera” adalah…',
+      question: 'Sinonim kata “segera” adalah...',
       options: { A: 'Lambat', B: 'Nanti', C: 'Lekas', D: 'Perlahan' },
       answer: 'C'
     },
     {
       id: 110,
       question:
-        'Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah… Ibu kota Indonesia adalah…',
+        'Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah... Ibu kota Indonesia adalah...',
       options: { A: 'Bandung', B: 'Jakarta', C: 'Surabaya', D: 'Medan' },
       answer: 'B'
     },
     {
       id: 111,
-      question: 'Hasil dari 12 × 8 adalah…',
+      question: 'Hasil dari 12 × 8 adalah...',
       options: { A: '80', B: '88', C: '96', D: '98' },
       answer: 'C'
     },
     {
       id: 112,
-      question: 'Sinonim kata “segera” adalah…',
+      question: 'Sinonim kata “segera” adalah...',
       options: { A: 'Lambat', B: 'Nanti', C: 'Lekas', D: 'Perlahan' },
       answer: 'C'
     }
   ],
   default: [
-    { id: 201, question: '2 + 2 = …', options: { A: '3', B: '4', C: '5', D: '22' }, answer: 'B' }
+    { id: 201, question: '2 + 2 = ...', options: { A: '3', B: '4', C: '5', D: '22' }, answer: 'B' }
   ]
 };
 
@@ -222,7 +222,7 @@ export default function TakeTestPage() {
   useEffect(() => {
     if (!timerEnabled) return;
     if (remaining === 0 && !isSubmitting) {
-      toast.info('Waktu habis. Mengirim jawaban…');
+      toast.info('Waktu habis. Mengirim jawaban...');
       doSubmit();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -271,15 +271,40 @@ export default function TakeTestPage() {
       setIsSubmitting(true);
       setLoading(true);
 
+      // hitung durasi kalau pakai timer
+      const durationSec =
+        qs.get('timer') === '1' && durationMin > 0 ? totalSeconds - remaining : undefined;
+
       if (isDummyMode()) {
+        // ---- DUMMY SCORING ----
         const keyById = new Map(questions.map((q) => [q.id, q.answer]));
         const correctCount = answers.reduce(
           (acc, a) => acc + (keyById.get(a.question_id) === a.selected ? 1 : 0),
           0
         );
+        const total = questions.length || 0;
+        const accuracy = total ? (correctCount / total) * 100 : 0;
+
+        // simpan payload untuk drawer di History
+        localStorage.setItem(
+          'latestResult',
+          JSON.stringify({
+            // sessionId bisa dikosongin utk dummy
+            title: `Tryout ${slug.toUpperCase()}`,
+            category: slug.toUpperCase(),
+            correct: correctCount,
+            total,
+            accuracy,
+            durationSec,
+            startedAt,
+            finishedAt: new Date().toISOString()
+          })
+        );
+
         await sleep(600);
-        toast.success(`Jawaban terkirim! (dummy) • Benar ${correctCount}/${questions.length}`);
+        toast.success(`Jawaban terkirim! (dummy) • Benar ${correctCount}/${total}`);
       } else {
+        // ---- REAL API ----
         const base = process.env.NEXT_PUBLIC_API_BASE_URL!;
         const res = await fetch(`${base}/api/user/tests/${slug}/submit`, {
           method: 'POST',
@@ -288,12 +313,64 @@ export default function TakeTestPage() {
           body: JSON.stringify({ started_at: startedAt, answers })
         });
         if (!res.ok) throw new Error();
+
+        // PERBAIKAN: Mengganti `any` dengan tipe yang lebih spesifik
+        const json: {
+          id?: string;
+          session_id?: string;
+          correct?: number;
+          correct_count?: number;
+          score?: { correct: number; total: number };
+          total?: number;
+          total_questions?: number;
+          accuracy?: number;
+          percentage?: number;
+          duration_sec?: number;
+          duration?: number;
+          time_spent?: number;
+          title?: string;
+          category?: string;
+          started_at?: string;
+          finished_at?: string;
+        } = await res.json().catch(() => ({}));
+
+        const sessionId = String(json.id ?? json.session_id ?? '');
+
+        const correct = Number(json.correct ?? json.correct_count ?? json.score?.correct ?? 0);
+        const total = Number(
+          json.total ?? json.total_questions ?? json.score?.total ?? questions.length
+        );
+        const accuracy = Number(
+          json.accuracy ?? json.percentage ?? (total ? (correct / total) * 100 : 0)
+        );
+        const dur =
+          Number(json.duration_sec ?? json.duration ?? json.time_spent ?? durationSec ?? 0) ||
+          undefined;
+
+        localStorage.setItem(
+          'latestResult',
+          JSON.stringify({
+            sessionId,
+            title: json.title ?? `Tryout ${slug.toUpperCase()}`,
+            category: json.category ?? slug.toUpperCase(),
+            correct,
+            total,
+            accuracy,
+            durationSec: dur,
+            startedAt: json.started_at ?? startedAt,
+            finishedAt: json.finished_at ?? new Date().toISOString()
+          })
+        );
+
         toast.success('Jawaban terkirim!');
       }
 
+      // bersihkan cache sesi
       localStorage.removeItem(`session:${slug}:answers`);
       localStorage.removeItem(`session:${slug}:started_at`);
-      router.replace('/(user)/history'); // NOTE: pastikan route ini memang ada
+
+      // pindah ke history — drawer akan auto-open dari localStorage.latestResult
+      router.replace('/history');
     } catch {
       toast.error('Submit gagal');
     } finally {

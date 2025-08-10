@@ -8,8 +8,8 @@ import { motion } from 'framer-motion';
 const items = [
   { label: 'Home', href: '/homepage', icon: Home },
   { label: 'Tes', href: '/tests', icon: BookOpenCheck },
-  { label: 'Histori', href: '/(user)/history', icon: Clock3 },
-  { label: 'Profil', href: '/(user)/profile', icon: User }
+  { label: 'Histori', href: '/history', icon: Clock3 },
+  { label: 'Profil', href: '/profile', icon: User }
 ];
 
 export default function BottomNav() {
